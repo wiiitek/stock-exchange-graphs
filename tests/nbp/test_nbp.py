@@ -6,6 +6,8 @@ from unittest import TestCase
 
 from src.nbp.nbp import Nbp, NonWorkingDayException
 
+NBP_API_DOMAIN = 'https://api.nbp.pl'
+
 
 class TestCommandLineArguments(TestCase):
 
@@ -18,13 +20,13 @@ class TestCommandLineArguments(TestCase):
         self.assertIsNotNone(tested)
 
     def test_should_throw_exception_for_saturday(self):
-        tested = Nbp('https://api.nbp.pl')
+        tested = Nbp(NBP_API_DOMAIN)
         saturday = date(2020, 2, 2)
         with self.assertRaises(NonWorkingDayException):
             tested.currency_url('usd', saturday)
 
     def test_should_create_currency_rates_urls(self):
-        tested = Nbp('https://api.nbp.pl')
+        tested = Nbp(NBP_API_DOMAIN)
         actual = tested.currency_url('usd', date(2020, 2, 3))
         expected = 'https://api.nbp.pl/api/exchangerates/rates/a/usd/2020-02-03/?format=json'
         self.assertEqual(expected, actual)
@@ -46,7 +48,7 @@ class TestCommandLineArguments(TestCase):
         self.assertEqual(expected, actual)
 
     def test_should_create_currency_urls(self):
-        tested = Nbp('https://api.nbp.pl')
+        tested = Nbp(NBP_API_DOMAIN)
         day = date(2020, 5, 20)
         actual = tested.currency_urls(day, 'chf', 5)
         expected = [
@@ -59,17 +61,17 @@ class TestCommandLineArguments(TestCase):
         self.assertEqual(expected, actual)
 
     def test_should_parse_json_multiple(self):
-        jsonA = '''{
+        json_a = '''{
                         "table":"A","currency":"dolar amerykański","code":"USD",
                         "rates":[
                             {"no":"095/A/NBP/2020","effectiveDate":"2020-05-18","mid":4.2224}
         ]}'''
-        jsonB = '''{
+        json_b = '''{
                         "table":"A","currency":"dolar amerykański","code":"USD",
                         "rates":[
                             {"no":"090/A/NBP/2020","effectiveDate":"2020-05-11","mid":4.2126}
         ]}'''
-        actual = Nbp.currency_rates([jsonA, jsonB])
+        actual = Nbp.currency_rates([json_a, json_b])
         expected = [('2020-05-11', 4.2126), ('2020-05-18', 4.2224)]
         self.assertEqual(expected, actual)
 
@@ -85,7 +87,7 @@ class TestCommandLineArguments(TestCase):
         line_count = 0
         with open(tmp_file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
-            for row in csv_reader:
+            for _ in csv_reader:
                 line_count += 1
             csv_file.close()
 

@@ -34,9 +34,9 @@ class Nbp(object):
 
     def currency_urls(self, day, currency_id, weeks):
         result = []
-        current_day = Nbp.last_monday(day)
+        last_monday = Nbp.last_monday(day)
         for x in range(0, weeks):
-            url = self.currency_url(currency_id, current_day)
+            day = last_monday - timedelta(weeks=x)
+            url = self.currency_url(currency_id, day)
             result.append(url)
-            current_day = current_day - timedelta(weeks=1)
         return result

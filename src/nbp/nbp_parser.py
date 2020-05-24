@@ -2,7 +2,6 @@ import json
 
 
 def _currency_rate(json_input) -> tuple:
-    result: float
     data = json.loads(json_input)
     single_data = data['rates'][0]
     day = single_data['effectiveDate']
