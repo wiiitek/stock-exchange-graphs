@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from src.nbp.nbp_csv import _save_to_csv
 from src.nbp.nbp_days import _last_monday
 from src.nbp.nbp_http import _call_for_currency
 from src.nbp.nbp_parser import _currency_rate
@@ -19,6 +20,7 @@ class Nbp(object):
     call_for_currency = _call_for_currency
     currency_rate = _currency_rate
     currency_rates = _currency_rates
+    save_to_csv = _save_to_csv
 
     def __init__(self, api_domain):
         self.api_domain = api_domain

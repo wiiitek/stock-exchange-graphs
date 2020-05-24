@@ -1,3 +1,4 @@
+import csv
 import os
 from datetime import date
 from pathlib import Path
@@ -10,7 +11,7 @@ class TestCommandLineArguments(TestCase):
 
     def setUp(self):
         root_path = Path(__file__).parent.parent.parent
-        self.sample_data_dir = os.path.join(root_path, 'tests/resources/nbp/')
+        self.sample_data_dir = os.path.join(root_path, 'tests', 'resources', 'nbp')
 
     def test_should_create_instance(self):
         tested = Nbp('https://localhost')
@@ -71,3 +72,21 @@ class TestCommandLineArguments(TestCase):
         actual = Nbp.currency_rates([jsonA, jsonB])
         expected = [('2020-05-11', 4.2126), ('2020-05-18', 4.2224)]
         self.assertEqual(expected, actual)
+
+    def test_should_save_to_csv_file(self):
+        data = [('2020-05-11', 0.9997), ('2020-05-18', 0.9998), ('2020-05-25', 0.9999)]
+
+        tmp_file = os.path.join(self.sample_data_dir, 'test.csv')
+        if os.path.isfile(tmp_file):
+            os.remove(tmp_file)
+
+        Nbp.save_to_csv(tmp_file, data)
+
+        line_count = 0
+        with open(tmp_file) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            for row in csv_reader:
+                line_count += 1
+            csv_file.close()
+
+        self.assertEqual(3, line_count)
