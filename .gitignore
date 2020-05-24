@@ -1,0 +1,17 @@
+/.idea/
+
+# Python
+__pycache__/
+# for Python virtual environment
+/virtualenv/
+# for Sonar
+/.scannerwork/
+# for coverage report
+/coverage.xml
+/.coverage
+# for Pulint
+/pylint_report
+
+
+# Project generated files
+/output/

@@ -1,0 +1,58 @@
+language: python
+
+# Some ENV variables are also provided in Travis job web interface
+
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+
+before_install:
+  - python --version
+install:
+  - pip install -r requirements.txt
+  - pip install pytest
+script:
+  - pytest
+
+
+# https://docs.travis-ci.com/user/build-stages#build-stages-and-build-matrix-expansion
+jobs:
+  include:
+    - stage: sonarqube
+      python: "3.8"
+      addons:
+        sonarcloud:
+          organization: "wiiitek-github"
+      before_install:
+        - python --version
+      install:
+        - pip install -r requirements.txt
+        - pip install pytest
+        - pip install coverage
+        - pip install pylint
+      script:
+        - coverage run --branch --source=./src -m pytest -s ./tests
+        - coverage xml
+        # needs to return 0 status code in order to not fail whole build
+        - "pylint --reports=n --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\" src tests > pylint_report || echo \"Pylint exited with $?\""
+        - cat pylint_report
+      after_success:
+        - sonar-scanner
+    # additionally sends also coverage report to Codecov
+    - stage: codecov
+      python: "3.8"
+      before_install:
+        - python --version
+      install:
+        - pip install -r requirements.txt
+        - pip install pytest
+        - pip install coverage
+        - pip install codecov
+      script:
+        - coverage run --branch --source=./src -m pytest -s ./tests
+        - coverage xml
+      # submit coverage to https://codecov.io/
+      after_success:
+        - codecov -t $CODECOV_TOKEN
+

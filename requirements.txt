@@ -1,0 +1,5 @@
+# requirements.txt file should be enough for now. see also:
+# https://caremad.io/posts/2013/07/setup-vs-requirement/
+--index-url https://pypi.python.org/simple/
+
+PyYAML==5.3.1

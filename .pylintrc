@@ -1,0 +1,42 @@
+[MASTER]
+extension-pkg-whitelist=lxml.etree
+suggestion-mode=yes
+
+
+[MESSAGES CONTROL]
+
+disable=missing-module-docstring,
+        missing-class-docstring,
+        missing-function-docstring,
+        useless-object-inheritance
+score=yes
+
+[REFACTORING]
+max-nested-blocks=4
+never-returning-functions=sys.exit
+
+[STRING]
+check-quote-consistency=yes
+check-str-concat-over-line-jumps=yes
+
+[FORMAT]
+expected-line-ending-format=LF
+indent-after-paren=4
+indent-string='    '
+max-line-length=100
+max-module-lines=1000
+
+[MISCELLANEOUS]
+# List of note tags to take in consideration, separated by a comma.
+notes=FIXME,
+      XXX,
+      TODO
+
+[SIMILARITIES]
+ignore-comments=no
+ignore-docstrings=no
+ignore-imports=no
+min-similarity-lines=4
+
+[DESIGN]
+min-public-methods=1
