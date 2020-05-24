@@ -12,11 +12,11 @@ class TestCommandLineArguments(TestCase):
         self.assertRaisesRegex(SystemExit, '^2$', self.tested.parse)
 
     def test_should_parse_short_name_param(self):
-        self.tested.parse(['-n', 'źdźbło'])
-        actual = self.tested.known.name
+        self.tested.parse(['-c', 'źdźbło'])
+        actual = self.tested.known.currency
         self.assertEqual(actual, 'źdźbło')
 
     def test_should_parse_long_name_param(self):
-        self.tested.parse(['--name', '   '])
-        actual = self.tested.known.name
+        self.tested.parse(['--currency', '   '])
+        actual = self.tested.known.currency
         self.assertEqual(actual, '   ')

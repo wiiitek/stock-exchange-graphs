@@ -5,11 +5,11 @@ class CommandLineArguments(object):
 
     def __init__(self):
         self.parser = ArgumentParser()
-        self.parser.add_argument('-n',
-                                 '--name',
+        self.parser.add_argument('-c',
+                                 '--currency',
                                  required=True,
-                                 dest='name',
-                                 help='Sample parameter')
+                                 dest='currency',
+                                 help='Currency symbol for data import (GBP, USD, EUR, CHF).')
         # namespace will be overwritten by parse method
         self.known: Namespace = Namespace()
 
