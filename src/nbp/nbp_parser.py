@@ -1,35 +1,20 @@
 import json
 
 
-def _currency_rate(currency, json_input):
+def _currency_rate(json_input) -> tuple:
     result: float
     data = json.loads(json_input)
-    table = _find_table(data, 'A')
-    day = _find_day(table)
-    rate = _find_rate(table, currency)
+    single_data = data['rates'][0]
+    day = single_data['effectiveDate']
+    rate = single_data['mid']
     return day, rate
 
 
-def _find_table(data, table_id):
-    result = None
-    for table in data:
-        current_table_id = table['table']
-        if current_table_id.lower() == table_id.lower():
-            result = table
-    return result
-
-
-def _find_day(table):
-    result = table['effectiveDate']
-    return result
-
-
-def _find_rate(table, currency_id):
-    result = None
-    rates = table['rates']
-    for currency in rates:
-        code = currency['code']
-        if code.lower() == currency_id.lower():
-            rate = currency['mid']
-            result = rate
+def _currency_rates(json_list):
+    result = []
+    for json_item in json_list:
+        rate = _currency_rate(json_item)
+        result.append(rate)
+    # sot by first element in tuple
+    result.sort(key=lambda tup: tup[0])
     return result

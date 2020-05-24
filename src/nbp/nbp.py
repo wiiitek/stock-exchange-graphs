@@ -1,21 +1,9 @@
-import json
-import urllib.request
-from datetime import date, timedelta
+from datetime import timedelta
 
+from src.nbp.nbp_days import _last_monday
+from src.nbp.nbp_http import _call_for_currency
 from src.nbp.nbp_parser import _currency_rate
-
-
-def _last_monday(day: date):
-    result: date
-    delta = day.weekday()
-    result = day - timedelta(days=delta)
-    return result
-
-
-def _call_for_currency(url: str):
-    request = urllib.request.urlopen(url)
-    result = json.load(request)
-    return result
+from src.nbp.nbp_parser import _currency_rates
 
 
 class NonWorkingDayException(Exception):
@@ -29,6 +17,7 @@ class Nbp(object):
     last_monday = _last_monday
     call_for_currency = _call_for_currency
     currency_rate = _currency_rate
+    currency_rates = _currency_rates
 
     def __init__(self, api_domain):
         self.api_domain = api_domain

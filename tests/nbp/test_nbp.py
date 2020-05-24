@@ -34,16 +34,14 @@ class TestCommandLineArguments(TestCase):
         self.assertEqual(expected, actual)
 
     def test_should_read_exchange_rate_from_json(self):
-        json = '''[{
-                "table":"A", "no":"095/A/NBP/2020", "effectiveDate":"2020-05-18",
+        json = '''{
+                "table":"A","currency":"frank szwajcarski","code":"CHF",
                 "rates":[
-                    {"currency":"dolar amerykański","code":"USD","mid":4.2224},
-                    {"currency":"dolar australijski","code":"AUD","mid":2.7218},
-                    {"currency":"euro","code":"EUR","mid":4.5644}
+                    {"no":"095/A/NBP/2020","effectiveDate":"2020-05-18","mid":4.3419}
                 ]
-        }]'''
-        actual = Nbp.currency_rate('usd', json)
-        expected = ('2020-05-18', 4.2224)
+        }'''
+        actual = Nbp.currency_rate(json)
+        expected = ('2020-05-18', 4.3419)
         self.assertEqual(expected, actual)
 
     def test_should_create_currency_urls(self):
@@ -57,4 +55,19 @@ class TestCommandLineArguments(TestCase):
             'https://api.nbp.pl/api/exchangerates/rates/a/chf/2020-04-27/?format=json',
             'https://api.nbp.pl/api/exchangerates/rates/a/chf/2020-04-20/?format=json'
         ]
+        self.assertEqual(expected, actual)
+
+    def test_should_parse_json_multiple(self):
+        jsonA = '''{
+                        "table":"A","currency":"dolar amerykański","code":"USD",
+                        "rates":[
+                            {"no":"095/A/NBP/2020","effectiveDate":"2020-05-18","mid":4.2224}
+        ]}'''
+        jsonB = '''{
+                        "table":"A","currency":"dolar amerykański","code":"USD",
+                        "rates":[
+                            {"no":"090/A/NBP/2020","effectiveDate":"2020-05-11","mid":4.2126}
+        ]}'''
+        actual = Nbp.currency_rates([jsonA, jsonB])
+        expected = [('2020-05-11', 4.2126), ('2020-05-18', 4.2224)]
         self.assertEqual(expected, actual)
