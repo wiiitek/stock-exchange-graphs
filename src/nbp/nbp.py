@@ -11,6 +11,7 @@ class NonWorkingDayException(Exception):
 
 
 class Nbp(object):
+    # for now we are only reading from table A
     # https://www.nbp.pl/home.aspx?f=/kursy/kursy_archiwum.html
     table_name: str = 'a'
 
