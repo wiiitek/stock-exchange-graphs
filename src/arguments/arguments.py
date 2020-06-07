@@ -11,7 +11,7 @@ class CommandLineArguments(object):
                                  dest='currency',
                                  help='Currency symbol for data import (GBP, USD, EUR, CHF).')
         # namespace will be overwritten by parse method
-        self.known: Namespace = Namespace()
+        self.args: Namespace = Namespace()
 
     def parse(self, args=None):
-        self.known = self.parser.parse_args(args)
+        self.args = self.parser.parse_args(args)

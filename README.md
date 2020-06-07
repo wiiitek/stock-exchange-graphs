@@ -33,7 +33,7 @@ pip install -r requirements.txt
 ### Run
 
 ```bash
-python main.py --name "<YOUR NAME>"
+python main.py --currency EUR
 ```
 
 ### Validate

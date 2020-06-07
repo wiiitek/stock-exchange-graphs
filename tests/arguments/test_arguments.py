@@ -13,10 +13,10 @@ class TestCommandLineArguments(TestCase):
 
     def test_should_parse_short_name_param(self):
         self.tested.parse(['-c', 'źdźbło'])
-        actual = self.tested.known.currency
+        actual = self.tested.args.currency
         self.assertEqual(actual, 'źdźbło')
 
     def test_should_parse_long_name_param(self):
         self.tested.parse(['--currency', '   '])
-        actual = self.tested.known.currency
+        actual = self.tested.args.currency
         self.assertEqual(actual, '   ')

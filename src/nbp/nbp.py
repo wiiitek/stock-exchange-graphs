@@ -29,14 +29,15 @@ class Nbp(object):
         weekday = day.weekday()
         if weekday in [6, 7]:
             raise NonWorkingDayException(f'Day: {day} is non-working-day')
-        day_str = day.strftime("%Y-%m-%d")
-        return f'{self.api_domain}/api/exchangerates/rates/{Nbp.table_name}/{currency_id}/{day_str}/?format=json'
+        day_str = day.strftime('%Y-%m-%d')
+        return f'{self.api_domain}/api/exchangerates/rates/' + \
+               f'{Nbp.table_name}/{currency_id}/{day_str}/?format=json'
 
     def currency_urls(self, day, currency_id, weeks):
         result = []
         last_monday = Nbp.last_monday(day)
-        for x in range(0, weeks):
-            day = last_monday - timedelta(weeks=x)
+        for week_no in range(0, weeks):
+            day = last_monday - timedelta(weeks=week_no)
             url = self.currency_url(currency_id, day)
             result.append(url)
         return result

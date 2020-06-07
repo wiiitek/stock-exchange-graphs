@@ -4,12 +4,12 @@ from src.arguments.arguments import CommandLineArguments
 
 
 def run_project(args):
-    arguments = CommandLineArguments()
-    arguments.parse(args[1:])
+    parser = CommandLineArguments()
+    parser.parse(args[1:])
 
-    name = arguments.known.invoice_input
-    print('Hello %(name)s!' %
-          {'name': name})
+    currency = parser.args.currency
+    print('Hello, currency specified: %(text)s!' %
+          {'text': currency})
 
 
 if __name__ == '__main__':
