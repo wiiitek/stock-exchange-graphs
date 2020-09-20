@@ -21,7 +21,7 @@ class TestNbpParser(TestCase):
             self.tested_big = NbpParser(content)
             file.close()
 
-    def test_should_read_eur(self):
+    def test_should_read_eur_for_single_date(self):
         actual = self.tested_small.currency_rates('EUR', '2020-06-04')
 
         self.assertEqual({'2020-06-04': 4.4347}, actual)
@@ -35,15 +35,16 @@ class TestNbpParser(TestCase):
 
     def test_should_read_eur_multiple_from_big_file(self):
         actual = self.tested_big.currency_rates('EUR',
-                                                '2020-05-05',
-                                                '2020-05-12',
-                                                '2020-05-19',
-                                                '2020-06-05')
+                                                '2020-04-09',
+                                                '2020-04-15')
         self.assertEqual({
-            '2020-05-05': 4.5476,
-            '2020-05-12': 4.5549,
-            '2020-05-19': 4.5610,
-            '2020-06-05': 4.4443}, actual)
+            '2020-04-09': 4.5370,
+            '2020-04-10': 4.5484,
+            '2020-04-11': None,
+            '2020-04-12': None,
+            '2020-04-13': None,
+            '2020-04-14': 4.5512,
+            '2020-04-15': 4.5389}, actual)
 
     def test_should_read_two_swiss_franks(self):
         actual = self.tested_small.currency_rates('CHF', '2020-06-04', '2020-06-05')
