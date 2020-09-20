@@ -30,12 +30,6 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-### Run
-
-```bash
-python main.py --currency EUR
-```
-
 ### Validate
 
 First ensure you have *venv* activated. Then install [pylint] and run analysis:
