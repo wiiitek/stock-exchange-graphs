@@ -1,8 +1,7 @@
-import datetime
 import json
 from datetime import date, timedelta
 
-DATE_FORMAT = '%Y-%m-%d'
+NBP_DATE_FORMAT = '%Y-%m-%d'
 
 
 class StartAfterEndException(Exception):
@@ -13,10 +12,10 @@ def initialize(start: date, end: date):
     result = {}
     day_count = (end - start).days
     if day_count < 0:
-        raise StartAfterEndException('start: ' + start.strftime(DATE_FORMAT) + ', end: ' + end.strftime(DATE_FORMAT))
+        raise StartAfterEndException('start: ' + start.strftime(NBP_DATE_FORMAT) + ', end: ' + end.strftime(NBP_DATE_FORMAT))
     for n in range(day_count + 1):
         single_date = start + timedelta(n)
-        result[single_date.strftime(DATE_FORMAT)] = None
+        result[single_date.strftime(NBP_DATE_FORMAT)] = None
     return result
 
 
@@ -26,14 +25,12 @@ class NbpParser(object):
     def __init__(self, nbp_api_json: str):
         self.json = nbp_api_json
 
-    def currency_rates(self, currency_id: str, start: str, end: str = None):
+    def currency_rates(self, currency_id: str, start: date, end: date = None):
         """Parses JSON for multiple currencies and multiples dates
            and extract currency rates into map: date -> rate."""
         if end is None:
             end = start
-        start_date = datetime.datetime.strptime(start, DATE_FORMAT)
-        end_date = datetime.datetime.strptime(end, DATE_FORMAT)
-        result = initialize(start_date, end_date)
+        result = initialize(start, end)
 
         parsed = json.loads(self.json)
         for table in parsed:

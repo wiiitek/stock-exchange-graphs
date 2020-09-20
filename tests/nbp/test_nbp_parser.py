@@ -1,8 +1,15 @@
+import datetime
 import os
 from pathlib import Path
 from unittest import TestCase
 
 from src.nbp.nbp_parser import NbpParser
+
+FORMAT = '%Y-%m-%d'
+
+
+def date(date_string: str):
+    return datetime.datetime.strptime(date_string, FORMAT)
 
 
 class TestNbpParser(TestCase):
@@ -22,12 +29,14 @@ class TestNbpParser(TestCase):
             file.close()
 
     def test_should_read_eur_for_single_date(self):
-        actual = self.tested_small.currency_rates('EUR', '2020-06-04')
+        actual = self.tested_small.currency_rates('EUR', date('2020-06-04'))
 
         self.assertEqual({'2020-06-04': 4.4347}, actual)
 
     def test_should_read_eur_two(self):
-        actual = self.tested_small.currency_rates('EUR', '2020-06-04', '2020-06-05')
+        actual = self.tested_small.currency_rates('EUR',
+                                                  date('2020-06-04'),
+                                                  date('2020-06-05'))
 
         self.assertEqual({
             '2020-06-04': 4.4347,
@@ -35,8 +44,8 @@ class TestNbpParser(TestCase):
 
     def test_should_read_eur_multiple_from_big_file(self):
         actual = self.tested_big.currency_rates('EUR',
-                                                '2020-04-09',
-                                                '2020-04-15')
+                                                date('2020-04-09'),
+                                                date('2020-04-15'))
         self.assertEqual({
             '2020-04-09': 4.5370,
             '2020-04-10': 4.5484,
@@ -47,11 +56,15 @@ class TestNbpParser(TestCase):
             '2020-04-15': 4.5389}, actual)
 
     def test_should_read_two_swiss_franks(self):
-        actual = self.tested_small.currency_rates('CHF', '2020-06-04', '2020-06-05')
+        actual = self.tested_small.currency_rates('CHF',
+                                                  date('2020-06-04'),
+                                                  date('2020-06-05'))
 
         self.assertEqual({'2020-06-04': 4.1190, '2020-06-05': 4.0948}, actual)
 
     def test_should_read_two_swiss_franks_from_big_file(self):
-        actual = self.tested_big.currency_rates('CHF', '2020-06-04', '2020-06-05')
+        actual = self.tested_big.currency_rates('CHF',
+                                                date('2020-06-04'),
+                                                date('2020-06-05'))
 
         self.assertEqual({'2020-06-04': 4.1190, '2020-06-05': 4.0948}, actual)

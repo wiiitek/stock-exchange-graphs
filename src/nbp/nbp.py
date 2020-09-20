@@ -1,7 +1,7 @@
 from datetime import date
 
-from src.nbp.nbp_parser import NbpParser
 from src.nbp.nbp_http import _call_for_currency
+from src.nbp.nbp_parser import NbpParser
 from src.nbp.nbp_url import NbpUrl
 
 
@@ -30,4 +30,4 @@ class Nbp(object):
         for idx, url in urls:
             response = self.call_for_currency(url)
             parser = NbpParser(response)
-            parser.currency_rates(currency_id)
+            parser.currency_rates(currency_id, start, end)
