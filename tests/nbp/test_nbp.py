@@ -35,21 +35,3 @@ class TestNbp(TestCase):
             'https://api.nbp.pl/api/exchangerates/tables/a/2020-03-31/2020-06-06/?format=json'
         ]
         self.assertEqual(expected, actual)
-
-    def test_should_save_to_csv_file(self):
-        data = [('2020-05-11', 0.9997), ('2020-05-18', 0.9998), ('2020-05-25', 0.9999)]
-
-        tmp_file = os.path.join(self.sample_data_dir, 'test.csv')
-        if os.path.isfile(tmp_file):
-            os.remove(tmp_file)
-
-        Nbp.save_to_csv(tmp_file, data)
-
-        line_count = 0
-        with open(tmp_file) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')
-            for _ in csv_reader:
-                line_count += 1
-            csv_file.close()
-
-        self.assertEqual(3, line_count)

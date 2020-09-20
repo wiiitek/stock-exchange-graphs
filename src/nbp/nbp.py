@@ -1,6 +1,5 @@
 from datetime import date
 
-from src.nbp.nbp_csv import _save_to_csv
 from src.nbp.nbp_http import _call_for_currency
 from src.nbp.nbp_url import NbpUrl
 
@@ -16,7 +15,6 @@ class Nbp(object):
     table_name: str = 'a'
 
     call_for_currency = _call_for_currency
-    save_to_csv = _save_to_csv
 
     def __init__(self, api_domain):
         self.api_domain = api_domain
